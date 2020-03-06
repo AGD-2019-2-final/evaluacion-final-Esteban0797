@@ -27,3 +27,7 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+A = FOREACH u GENERATE firstname, color;
+B = FILTER A BY color == 'blue' OR firstname MATCHES '^K.+';
+
+STORE B INTO 'output' USING PigStorage(',');

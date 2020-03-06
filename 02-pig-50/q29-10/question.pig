@@ -40,3 +40,19 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+A = FOREACH u GENERATE birthday, ToDate(birthday,'yyyy-MM-dd') as my_date;
+
+B = FOREACH A GENERATE birthday,
+		       LOWER(ToString(my_date,'MMM')) as MMM,
+	               ToString(my_date,'MM') as MM,ToString(my_date,'M') as M;
+
+C = FOREACH B GENERATE birthday,
+		       CASE MMM WHEN 'jan' THEN 'ene'
+         	       WHEN 'apr' THEN 'abr'
+                       WHEN 'aug' THEN 'ago'
+                       WHEN 'dec' THEN 'dic'
+                       ELSE MMM END,
+		       MM, 
+		       M;
+
+STORE C INTO 'output' USING PigStorage(',');

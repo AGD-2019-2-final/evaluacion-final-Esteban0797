@@ -27,3 +27,6 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+filter_results = FILTER u BY SUBSTRING(firstname, 0, 1) MATCHES '^[m-zM-Z].*';
+results = FOREACH filter_results GENERATE firstname;
+STORE results INTO 'output';

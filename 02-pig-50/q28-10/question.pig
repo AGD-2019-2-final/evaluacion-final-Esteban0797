@@ -29,4 +29,7 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+A = FOREACH u GENERATE birthday,ToDate(birthday,'yyyy-MM-dd') as my_date;
+B = FOREACH A GENERATE ToString(my_date,'yyyy') as year1 ,ToString(my_date,'yy') as year2;
 
+STORE B INTO 'output' USING PigStorage(',');

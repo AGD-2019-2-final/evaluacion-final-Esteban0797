@@ -12,3 +12,7 @@ fs -rm -f -r output;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+lines = LOAD 'data.tsv' AS (c1:CHARARRAY, c2:BAG{l:TUPLE(sl:CHARARRAY)}, c3:MAP[]);
+columnas = FOREACH lines GENERATE c1, COUNT(c2) AS cc2, SIZE(c3) AS cc3;
+ordered_columnas = ORDER columnas BY c1, cc2, cc3;
+STORE ordered_columnas INTO 'output' USING PigStorage(',');
